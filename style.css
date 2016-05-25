@@ -16,6 +16,10 @@ body {
   animation: Background 14s ease infinite;
 }
 
+a {
+  color:#FFF;
+}
+
 @-webkit-keyframes Background {
     0%{background-position:0% 94%}
     50%{background-position:100% 7%}
@@ -41,22 +45,36 @@ body {
   max-width: 420px;
   margin:auto;
   text-align: center;
-  padding: 10rem 4rem;
+  padding: 10rem 2rem;
 }
 
 #timestampContainer p {
   margin:0 0 0 0;
   padding:0;
+  font-weight: lighter;
 }
 
 #timestamp {
   margin:0;
   padding:0;
-  font-size:500%;
+  font-size:300%;
   color:#FFF;
 }
 
+/* Desktop */
+@media (min-width: 769px) {
+
+  #timestampContainer {
+    padding: 10rem 4rem;
+  }
+
+  #timestamp {
+    font-size:500%;
+  }
+}
+
 #timestampContainer footer {
+  font-weight: lighter;
   padding:1rem 0;
   margin:1rem 0  0 0;
   border-top:1px solid #FFF;

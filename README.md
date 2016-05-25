@@ -1,2 +1,3 @@
-# unixtimestampme
-Simple app for displaying current unix timestamp
+Unix Timestamp ME
+===
+A stupid simple app for displaying the current unix timestamp.

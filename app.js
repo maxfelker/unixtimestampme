@@ -1,10 +1,20 @@
 'use strict';
 
+// Determins and sets the timestamp
 class Clock {
 
   run() {
     this.setTimestamp();
     this.displayTimestamp();
+    this.setInterval();
+  }
+
+  setInterval() {
+    const self = this;
+    this.interval = setInterval(function() {
+      self.setTimestamp();
+      self.displayTimestamp();
+    },1000);
   }
 
   setTimestamp() {
@@ -18,22 +28,41 @@ class Clock {
 
 }
 
-// makes elements full screen height, width
-function fullScreen(element) {
-	element.css({
-		height: $(window).height()
-	});
+// UI manager, mainly to fullscreen the container
+class UI {
+
+  setup(element) {
+    const self = this;
+    this.fullscreen(element);
+    $(window).resize(function() {
+  		self.fullscreen(element);
+  	});
+  }
+
+  fullscreen(element) {
+    return element.css({
+  		height: $(window).height()
+  	});
+  }
+
 }
 
+const timestampUI = new UI();
 const unixClock = new Clock();
 
 $(function(){
-  fullScreen($(".container"));
-  $(window).resize(function() {
-		fullScreen($(".container"));
-	});
+
+  timestampUI.setup( $(".container") );
+
   unixClock.run();
-  setInterval(function() {
-    return unixClock.run();
-  },1000);
+
+  $('#timestamp').mouseenter(function() {
+    console.log('mouse');
+    clearInterval(unixClock.interval);
+  });
+
+  $('#timestamp').mouseleave(function() {
+    unixClock.run();
+  });
+
 });

@@ -1,0 +1,63 @@
+body {
+  padding:0;
+  margin:0;
+  font-family: 'Oswald', sans-serif;
+  color:#FFF;
+}
+
+.container {
+  position: relative;
+  height:100%;
+  background: linear-gradient(221deg, #318bd5, #1ebf79);
+  background-size: 400% 400%;
+  -webkit-animation: Background 14s ease infinite;
+  -moz-animation: Background 14s ease infinite;
+  -o-animation: Background 14s ease infinite;
+  animation: Background 14s ease infinite;
+}
+
+@-webkit-keyframes Background {
+    0%{background-position:0% 94%}
+    50%{background-position:100% 7%}
+    100%{background-position:0% 94%}
+}
+@-moz-keyframes Background {
+    0%{background-position:0% 94%}
+    50%{background-position:100% 7%}
+    100%{background-position:0% 94%}
+}
+@-o-keyframes Background {
+    0%{background-position:0% 94%}
+    50%{background-position:100% 7%}
+    100%{background-position:0% 94%}
+}
+@keyframes Background {
+    0%{background-position:0% 94%}
+    50%{background-position:100% 7%}
+    100%{background-position:0% 94%}
+}
+
+#timestampContainer {
+  max-width: 420px;
+  margin:auto;
+  text-align: center;
+  padding: 10rem 4rem;
+}
+
+#timestampContainer p {
+  margin:0 0 0 0;
+  padding:0;
+}
+
+#timestamp {
+  margin:0;
+  padding:0;
+  font-size:500%;
+  color:#FFF;
+}
+
+#timestampContainer footer {
+  padding:1rem 0;
+  margin:1rem 0  0 0;
+  border-top:1px solid #FFF;
+}

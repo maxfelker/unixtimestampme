@@ -57,7 +57,6 @@ $(function(){
   unixClock.run();
 
   $('#timestamp').mouseenter(function() {
-    console.log('mouse');
     clearInterval(unixClock.interval);
   });
 

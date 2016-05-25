@@ -14,7 +14,14 @@ class Clock {
     this.interval = setInterval(function() {
       self.setTimestamp();
       self.displayTimestamp();
-    },1000);
+    },100);
+  }
+
+  clearInterval() {
+    if (this.interval) {
+      clearInterval(this.interval);
+      this.interval = null;
+    }
   }
 
   setTimestamp() {
@@ -22,8 +29,54 @@ class Clock {
   }
 
   displayTimestamp() {
-    $('#timestamp').text(this.timestamp);
-    document.title = `Unix Time is ${this.timestamp}`;
+
+    var self = this;
+
+    var setTime = function(timestamp) {
+      $('#timestamp').text(timestamp);
+      document.title = 'Unix Time is ' + timestamp;
+    };
+
+    var displayedNode = $('#timestamp').contents()[0];
+
+    if (!displayedNode) {
+      return setTime(this.timestamp);
+    }
+
+    var selection = window.getSelection();
+
+    if (!selection.isCollapsed && displayedNode === selection.anchorNode) {
+      return;
+    }
+
+    var displayedTime = parseInt(displayedNode.nodeValue);
+    var difference = this.timestamp - displayedTime;
+
+    if (difference < 2) {
+      return setTime(this.timestamp);
+    }
+
+    // Stop counting, let us catch-up
+    this.clearInterval();
+
+    for (var i = 0; i < difference; i++) {
+
+      setTimeout(
+        function(step) {
+
+          setTime(displayedTime + step + 1);
+
+          // Done catching up, continue counting
+          if (step === difference - 1) {
+            self.setInterval();
+          }
+
+        }.bind(null, i),
+        i * Math.min(400 / difference, 750)
+      );
+
+    }
+
   }
 
 }
@@ -53,15 +106,5 @@ const unixClock = new Clock();
 $(function(){
 
   timestampUI.setup( $(".container") );
-
   unixClock.run();
-
-  $('#timestamp').mouseenter(function() {
-    clearInterval(unixClock.interval);
-  });
-
-  $('#timestamp').mouseleave(function() {
-    unixClock.run();
-  });
-
 });

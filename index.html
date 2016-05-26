@@ -3,20 +3,100 @@
 
   <head>
 
-      <meta charset="utf-8">
-      <meta http-equiv="x-ua-compatible" content="ie=edge">
-      <meta http-equiv="ClearType" content="true">
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta http-equiv="ClearType" content="true">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-      <meta charset="UTF-8">
-      <title>Unix Timestamp</title>
-      <meta name="description" content="Current unix timestamp">
+    <meta charset="UTF-8">
+    <title>Unix Timestamp</title>
+    <meta name="description" content="Current unix timestamp">
 
-      <link href='https://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css'>
-      <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+    <link href='https://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css'>
 
-      <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
-      <script type="text/javascript" src="app.js"></script>
+    <style>
+      body {
+        padding:0;
+        margin:0;
+        font-family: 'Oswald', sans-serif;
+        color:#FFF;
+      }
+
+      .container {
+        position: relative;
+        height:100vh;
+        background: linear-gradient(221deg, #318bd5, #1ebf79);
+        background-size: 400% 400%;
+        -webkit-animation: Background 14s ease infinite;
+        -moz-animation: Background 14s ease infinite;
+        -o-animation: Background 14s ease infinite;
+        animation: Background 14s ease infinite;
+      }
+
+      a {
+        color:#FFF;
+      }
+
+      @-webkit-keyframes Background {
+          0%{background-position:0% 94%}
+          50%{background-position:100% 7%}
+          100%{background-position:0% 94%}
+      }
+      @-moz-keyframes Background {
+          0%{background-position:0% 94%}
+          50%{background-position:100% 7%}
+          100%{background-position:0% 94%}
+      }
+      @-o-keyframes Background {
+          0%{background-position:0% 94%}
+          50%{background-position:100% 7%}
+          100%{background-position:0% 94%}
+      }
+      @keyframes Background {
+          0%{background-position:0% 94%}
+          50%{background-position:100% 7%}
+          100%{background-position:0% 94%}
+      }
+
+      #timestampContainer {
+        max-width: 420px;
+        margin:auto;
+        text-align: center;
+        padding: 10rem 2rem;
+      }
+
+      #timestampContainer p {
+        margin:0 0 0 0;
+        padding:0;
+        font-weight: lighter;
+      }
+
+      #timestamp {
+        margin:0;
+        padding:0;
+        font-size:300%;
+        color:#FFF;
+      }
+
+      /* Desktop */
+      @media (min-width: 769px) {
+
+        #timestampContainer {
+          padding: 10rem 4rem;
+        }
+
+        #timestamp {
+          font-size:500%;
+        }
+      }
+
+      #timestampContainer footer {
+        font-weight: lighter;
+        padding:1rem 0;
+        margin:1rem 0  0 0;
+        border-top:1px solid #FFF;
+      }
+    </style>
 
   </head>
 
@@ -34,6 +114,99 @@
       </div>
 
     </div>
+
+    <script>
+      (function() {
+
+        // Determines and sets the timestamp
+        var unixClock = {
+
+          run: function() {
+            this.setTimestamp();
+            this.displayTimestamp();
+            this.setInterval();
+          },
+
+          setInterval: function() {
+            var self = this;
+            this.interval = setInterval(function() {
+              self.setTimestamp();
+              self.displayTimestamp();
+            },100);
+          },
+
+          clearInterval: function() {
+            if (this.interval) {
+              clearInterval(this.interval);
+              this.interval = null;
+            }
+          },
+
+          setTimestamp: function() {
+            this.timestamp = Math.round(+new Date()/1000);
+          },
+
+          displayTimestamp: function() {
+
+            var self = this;
+            var $timestamp = document.getElementById('timestamp');
+
+            var setTime = function(timestamp) {
+              $timestamp.textContent = timestamp;
+              document.title = 'Unix Time is ' + timestamp;
+            };
+
+            var displayedNode = timestamp.textContent;
+
+            if (!displayedNode) {
+              return setTime(this.timestamp);
+            }
+
+            var selection = window.getSelection();
+
+            if (!selection.isCollapsed && displayedNode === selection.anchorNode) {
+              return;
+            }
+
+            var displayedTime = parseInt(displayedNode);
+            var difference = this.timestamp - displayedTime;
+
+            if (difference < 2) {
+              return setTime(this.timestamp);
+            }
+
+            // Stop counting, let us catch-up
+
+            this.clearInterval();
+
+            for (var i = 0; i < difference; i++) {
+
+              setTimeout(
+                function(step) {
+
+                  setTime(displayedTime + step + 1);
+
+                  // Done catching up, continue counting
+                  if (step === difference - 1) {
+                    self.setInterval();
+                  }
+
+                }.bind(null, i),
+                i * Math.min(400 / difference, 75)
+              );
+
+            }
+
+          }
+
+        };
+
+        document.addEventListener('DOMContentLoaded', function () {
+          unixClock.run();
+        });
+
+      })();
+    </script>
 
   </body>
 
